@@ -1,10 +1,8 @@
-
-function RTC(obj) {
+function JSRTC(obj) {
     var tracks = {}
     var peerConnection;
     var localStream = obj.stream != undefined ? (Array.isArray(obj.stream) ? obj.stream : [obj.stream]) : [];
-    if (obj.stream)
-        start(true)
+
     function start(isself) {
         peerConnection = new RTCPeerConnection();
         peerConnection.onicecandidate = gotIceCandidate;
@@ -28,19 +26,19 @@ function RTC(obj) {
     };
     function gotIceCandidate(event) {
         if (event.candidate != null) {
-            obj.onreq({ ty: 2, data: event.candidate });
+            obj.ondata({ ty: 2, data: event.candidate });
         }
     }
     function createdDescription(description) {
         peerConnection.setLocalDescription(description).then(function () {
-            obj.onreq({ ty: 1, data: peerConnection.localDescription });
+            obj.ondata({ ty: 1, data: peerConnection.localDescription });
         }).catch(errorHandler);
     }
     function errorHandler(err) {
         console.log(err)
         // hangup()
         // setTimeout(() => {
-        //     obj.onreq({ ty: 5 });
+        //     obj.ondata({ ty: 5 });
         // }, 9000);
     }
 
@@ -71,11 +69,6 @@ function RTC(obj) {
     function hangup(e) {
         if (!peerConnection)
             return
-        // for (var ls of localStream) {
-        //     ls.getTracks().forEach(function (track) {
-        //         track.stop();
-        //     });
-        // }
         localStream = [];
         peerConnection.close();
         peerConnection = undefined;
@@ -84,7 +77,7 @@ function RTC(obj) {
     }
     function closefun() {
         hangup(true)
-        obj.onreq({ ty: 3 });
+        obj.ondata({ ty: 3 });
     }
     function addstream(ls) {
         if (!peerConnection)
@@ -118,12 +111,15 @@ function RTC(obj) {
     }
     function removestream(ls) {
         removetrack(ls);
-        obj.onreq({ ty: 4, id: ls });
+        obj.ondata({ ty: 4, id: ls });
     };
     return {
-        setdata: setdata,
-        close: closefun,
-        addstream: addstream,
-        removestream: removestream
+        setData: setdata,
+        stop: closefun,
+        addStream: addstream,
+        removeStream: removestream,
+        start: function () {
+            start(true)
+        }
     }
 }
