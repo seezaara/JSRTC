@@ -7,7 +7,7 @@ a simple plugin for create peer to peer connection in browser by javascript
 
  - add sript to the HTML document
 	```html
-	<script src="./functions.js"></script>
+	<script src="https://raw.githubusercontent.com/seezaara/jsrtc/main/JSRTC.main.js"></script>
 	```
 - call main function 
 	```js
