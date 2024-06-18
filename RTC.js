@@ -80,8 +80,10 @@ function JSRTC(obj) {
         obj.ondata({ ty: 3 });
     }
     function addstream(ls) {
-        if (!peerConnection)
+        if (!peerConnection) {
+            localStream.push(ls)
             return
+        }
         if (!tracks[ls.id])
             tracks[ls.id] = []
         for (const track of ls.getTracks()) {
