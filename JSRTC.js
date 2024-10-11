@@ -3,6 +3,9 @@ function JSRTC(obj) {
     var peerConnection;
     var localStream = obj.stream != undefined ? (Array.isArray(obj.stream) ? obj.stream : [obj.stream]) : [];
 
+    if (!obj.autoClose)
+        obj.autoClose = true
+
     function start(isself) {
         peerConnection = new RTCPeerConnection();
         peerConnection.onicecandidate = gotIceCandidate;
@@ -69,13 +72,14 @@ function JSRTC(obj) {
     function hangup(e) {
         if (!peerConnection)
             return
+        Object.keys(tracks).forEach(removetrack);
         localStream = [];
         peerConnection.close();
         peerConnection = undefined;
         if (e != true && obj.onclose)
             obj.onclose(true)
     }
-    function closefun() {
+    function closefun(e = true) {
         hangup(true)
         obj.ondata({ ty: 3 });
     }
@@ -102,14 +106,16 @@ function JSRTC(obj) {
         } else {
             try {
                 for (const track of tracks[ls]) {
+                    if (obj.autoClose && "stop" in track.track) {
+                        track.track.stop();
+                    }
                     peerConnection.removeTrack(track);
                 }
-            } catch (e) { }
+            } catch (e) {
+                console.log(e)
+            }
         }
         delete tracks[ls]
-        if (Object.keys(tracks).length == 0) {
-            hangup()
-        }
     }
     function removestream(ls) {
         removetrack(ls);
