@@ -19,6 +19,7 @@ a simple plugin for create peer to peer connection in browser by javascript
 	- `onclose`: a function event is fired when RTC is closing
 	- `ondata`: a function event for getting data for connecting to the other client by using `setdata()`
 	-  `onremovestream`: a function event fired when a stream was removed
+	-  `autoClose`: if set true. close the stream whene connection closed (default: true)
 - return
 - `setData()`: for setting data that you get on the other client (parameter object)
 - `close()`: to close the RTC connection
