@@ -66,3 +66,10 @@ var rtc = JSRTC({
 // also you must use `rtc.setData(...)` function to set that data you get in transmitter `console.log`
 // rtc.setData(...)
 ```
+
+# licence
+ <p>
+    <img width="32px" src="https://raw.githubusercontent.com/seezaara/RocketV2ray/main/doc/logo.png"><a href="https://www.youtube.com/@seezaara">seezaara youtube</a>
+<br>
+    <img width="32px" src="https://raw.githubusercontent.com/seezaara/RocketV2ray/main/doc/logo.png"><a href="https://t.me/seezaara">seezaara telegram</a>
+</p> 
